@@ -38,12 +38,29 @@ services:
       timeout: 5s
       retries: 10
 
+  # ─── Correction des permissions des volumes Airflow ─────────────────────────
+  airflow-fix-permissions:
+    image: busybox
+    user: "0:0"
+    volumes:
+      - ./logs:/opt/airflow/logs
+    command:
+      - sh
+      - -c
+      - |
+        mkdir -p /opt/airflow/logs/scheduler /opt/airflow/logs/dag_processor_manager && \
+        chown -R 1000:0 /opt/airflow/logs && \
+        chmod -R 775 /opt/airflow/logs
+    restart: "no"
+
   # ─── Initialisation Airflow (tâche unique) ────────────────────────────────
   airflow-init:
     <<: *airflow-common
     depends_on:
       postgres:
         condition: service_healthy
+      airflow-fix-permissions:
+        condition: service_completed_successfully
     command:
       - bash
       - -c
