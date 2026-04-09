@@ -36,7 +36,12 @@ def transform():
     df = df[df["price"] > 0]                          # garder les prix positifs
 
     df["invoicedate"] = pd.to_datetime(df["invoicedate"])
-    df["total_amount"] = df["quantity"] * df["price"]
+
+    # Conversion GBP → EUR (taux fixe historique 2009-2011)
+    # Source : Online Retail II UCI — les prix sont en livres sterling (£)
+    GBP_TO_EUR = 1.17
+    df["total_amount"] = df["quantity"] * df["price"] * GBP_TO_EUR
+    logger.info(f"Montants convertis GBP → EUR (taux fixe : {GBP_TO_EUR})")
 
     logger.info(f"Après nettoyage : {len(df):,} lignes valides")
 

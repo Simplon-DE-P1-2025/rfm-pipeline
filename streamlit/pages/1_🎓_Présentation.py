@@ -740,6 +740,14 @@ Airflow tentait de se connecter à PostgreSQL avant qu'il soit prêt.
 
 Le package était dans `requirements.txt` mais n'était pas résolu au bon endroit.
 → Lié au problème de permissions ci-dessus, résolu en même temps.
+
+**5. Les prix sont en livres sterling (£), pas en euros**
+
+Le dataset UCI Online Retail II indique des prix en GBP — les montants `monetary`
+étaient affichés en £ sur le dashboard sans conversion.
+→ Quick fix : multiplication par un taux fixe `GBP_TO_EUR = 1.17`
+(moyenne historique 2009-2011) dans `transform.py`, appliqué au `total_amount` avant
+le calcul RFM.
         """)
 
     with col2:
