@@ -1,0 +1,12 @@
+[project]
+name = "rfm-dashboard"
+version = "0.1.0"
+description = "Dashboard de visualisation RFM — Online Retail"
+requires-python = ">=3.11"
+dependencies = [
+    "streamlit==1.33.0",
+    "pandas==2.1.4",
+    "psycopg2-binary==2.9.9",
+    "sqlalchemy==2.0.29",
+    "plotly==5.22.0",
+]
